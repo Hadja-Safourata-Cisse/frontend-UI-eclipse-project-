@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WrsRequest
+		xmlns="http://www.businesscode.de/schema/bcdui/wrs-request-1.0.0"
+		maxRows="10" startRow="1">
+		<Select>
+				<Columns>
+						<C bRef='city' />
+						<C bRef='city_ascii' />
+						<C bRef='lat' />
+						<C bRef='lng' />
+						<C bRef='country' />
+						<C bRef='iso2' />
+						<C bRef='iso3' />
+						<C bRef='admin_name' />
+						<C bRef='capital' />
+						<C bRef='population' />
+						<C bRef='id' />
+						<C bRef='distancetocologne' />
+				</Columns>
+				<From>
+						<BindingSet>myCities</BindingSet>
+				</From>
+
+				<!--<Filter xmlns="http://www.businesscode.de/schema/bcdui/filter-1.0.0"> 
+						<Expression bRef="country" op="=" value="China" /> </Filter> -->
+
+		</Select>
+</WrsRequest>

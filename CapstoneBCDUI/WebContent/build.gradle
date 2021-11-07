@@ -1,0 +1,19 @@
+apply plugin: 'war'
+
+// Let this point to the root of your web application within your project
+webAppDirName = "WebContent"
+
+dependencies {
+  repositories {
+    mavenCentral()
+    maven {
+      url "https://github.com/businesscode/maven-repo/raw/master"
+    }
+  }
+  implementation 'de.businesscode.bcdui:bcd-ui-core:5.5.0-SNAPSHOT'
+  implementation 'de.businesscode.bcdui:bcd-ui-theme-bcd:5.5.0-SNAPSHOT'
+
+  // Adding Postgres JDBC, use the appropriate driver for your database 
+  implementation 'org.postgresql:postgresql:42.1.4'
+
+}

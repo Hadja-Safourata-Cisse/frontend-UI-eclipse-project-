@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Context>
+
+  <!-- Sample for MSSqlServer JDBC Driver 7
+       -Dmyproj_db_url=jdbc:sqlserver://sqlserverXX:1433;databaseName=dbNameXX
+  <Resource name="jdbc/connectionMSSqlserver"
+    factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+    auth="Container"
+    type="javax.sql.DataSource"
+    maxActive="15" maxTotal="15"
+    maxIdle ="5"
+    maxWait="15000" maxWaitMillis="15000"
+    logAbandoned="true"
+    removeAbandoned="true" removeAbandonedOnBorrow="true"
+    removeAbandonedTimeout="300"
+    validationQuery="select 1"
+    testOnBorrow="true"
+    driverClassName="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+    url="${myproj_db_url}"
+    username="${myproj_db_username}"
+    password="${myproj_db_password}" />
+  -->
+
+  <!-- Sample for PostgreSQL
+      <! -Dmyproj_db_url=jdbc:postgresql://postgresserver:5432/dbNameXX-->
+  <Resource name="jdbc/postgres"
+    factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+    auth="Container"
+    type="javax.sql.DataSource"
+    maxActive="15" maxTotal="15"
+    maxIdle ="5"
+    maxWait="15000" maxWaitMillis="15000"
+    removeAbandoned="true" removeAbandonedOnBorrow="true"
+    removeAbandonedTimeout="300"
+    validationQuery="select 1"
+    testOnBorrow="true"
+    driverClassName="org.postgresql.Driver"
+    url="jdbc:postgresql://localhost:5432/postgres"
+    username="postgres"
+    password="postgres"/>
+  
+
+  <!-- Sample for MySql
+     -Dmyproj_db_url=jdbc:mysql://serverXX:3306/dbnameXX?sessionVariables=sql_mode='NO_BACKSLASH_ESCAPES,ANSI'
+     Not fully supported, for example no col-totals in cube due to missing grouping sets
+     and no partitioning (row-from-to reading) due to missing ranking functionality
+  <Resource name="jdbc/connectionMySql"
+    factory="org.apache.tomcat.jdbc.pool.DataSourceFactory"
+    auth="Container"
+    type="javax.sql.DataSource"
+    maxActive="15" maxTotal="15"
+    maxIdle ="5"
+    maxWait="15000" maxWaitMillis="15000"
+    removeAbandoned="true" removeAbandonedOnBorrow="true"
+    removeAbandonedTimeout="300"
+    validationQuery="select 1"
+    testOnBorrow="true"
+    driverClassName="com.mysql.cj.jdbc.Driver"
+    url="${myproj_db_url}"
+    username="${myproj_db_username}"
+    password="${myproj_db_password}" />
+  -->
+
+  <WatchedResource>WEB-INF/web.xml</WatchedResource>
+</Context>

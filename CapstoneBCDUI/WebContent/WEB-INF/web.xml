@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2010-2017 BusinessCode GmbH, Germany
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<!--
+  Standard web.xml for BCD-UI 4 applications.
+  -->
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+  <display-name>ProjectName</display-name>
+
+  <!--
+    BCD-UI 4 Filters
+  -->
+
+  <!-- filter for identifying requests from MS Office applications like Word or Excel to not redirect to login page, enable if needed -->
+  <!--
+  <filter>
+    <filter-name>bcdui4.AvailabilityFilter</filter-name>
+    <filter-class>de.businesscode.bcdui.web.filters.AvailabilityFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>bcdui4.AvailabilityFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  -->
+
+    <!--  Security filter for authentication and authorization, see https://shiro.apache.org/configuration.html--> 
+      <!--  <filter>
+      <filter-name>bcdui4.ShiroFilter</filter-name>
+     <filter-class>org.apache.shiro.web.servlet.IniShiroFilter</filter-class>
+      <init-param>
+        <param-name>config</param-name>
+        <param-value>
+          # Shiro core settings
+        [main]
+
+        #### You can either work with
+        ## 1 Setup static users and roles via [users] and [roles] section in this file below
+        ## 2 or use BCD-UI's bcd_sec_xxx BindingSets together with realmBcdJdbc below for a dynamic user administration
+        ## 2.1 or combine Windows SPNEGO SSO authentification with authorization by realmBcdJdbc
+        ## 2.2 or combine authentification by OAuth with authorization by realmBcdJdbc
+
+        #### Switch to BCD-UI well known BindingSets (bcd_sec_user[_settings|_roles])
+        ## for authentication and authorization supporting salted passwords, etc. (named option 2. above)
+        ## make sure you created an appropriate WEB-INF/bcdui/subjectSettings.xml as well if enabling
+        # realmBcdJdbc = de.businesscode.bcdui.subjectsettings.JdbcRealm
+        # For security reasons BindingItems of password and salt are blind in BindingSet. They are assumed to have columns name password/password_salt. Here you can overwrite that.
+        # realmBcdJdbc.passwordColumnName     = password
+        # realmBcdJdbc.passwordSaltColumnName = password_salt
+        # realmBcdJdbc.hashIterations         = 1024
+        # to disable salted passwords (discouraged) and for backwards compatibility set this flag, password is considered plain text then
+        # realmBcdJdbc.hashSalted = false
+
+        ## Use the following for Windows SPNEGO SSO mechanism (named option 2.1 above)
+        # authc = de.businesscode.bcdui.subjectsettings.AuthenticationFilter
+
+        #### OAuth start (named option 2.2 above)
+        ## Use this to OAuth authenticate against Azure / Google. Make sure to enable /oauth in [url] section.
+        ## Some information is provided by OAuth provider when setting up ypur application there
+        ## Azure
+        # oauthcAzure                             = de.businesscode.bcdui.subjectsettings.oauth2.OAuthAuthenticatingFilter
+        # oauthcAzure.optionalProviderId          = azure
+        # oauthcAzure.authorizeEndpoint           =     # provided by Azure
+        # oauthcAzure.authScope                   = openid https://graph.microsoft.com/user.read
+        # oauthcAzure.clientId                    =     # provided by Azure
+        # oauthcAzure.redirectUrl                 = http://myapp.com/oauth  # Adjust and tell this Azure
+        # oauthcAzureRealm                        = de.businesscode.bcdui.subjectsettings.oauth2.OAuthRealm
+        # oauthcAzureRealm.authenticator          = $oauthcAzure
+        # oauthcAzureRealm.apiEndpoint            = https://graph.microsoft.com/v1.0/me/
+        # oauthcAzureRealm.clientSecret           =     # provided by Azure
+        # oauthcAzureRealm.tokenEndpoint          =     # provided by Azure
+        # oauthcAzureRealm.principalPropertyName  = userPrincipalName
+        ## Google
+        # oauthcGoogle                            = de.businesscode.bcdui.subjectsettings.oauth2.OAuthAuthenticatingFilter
+        # oauthcGoogle.optionalProviderId         = google
+        # oauthcGoogle.authorizeEndpoint          = https://accounts.google.com/o/oauth2/v2/auth
+        # oauthcGoogle.authScope                  = email
+        # oauthcGoogle.clientId                   =     # provided by Google
+        # oauthcGoogle.redirectUrl                = http://myapp.com/oauth  # Adjust and tell this Google
+        # oauthcGoogleRealm                       =de.businesscode.bcdui.subjectsettings.oauth2.OAuthRealm
+        # oauthcGoogleRealm.authenticator         = $oauthcGoogle
+        # oauthcGoogleRealm.apiEndpoint           = https://www.googleapis.com/oauth2/v3/userinfo
+        # oauthcGoogleRealm.clientSecret          =     # provided by Goole
+        # oauthcGoogleRealm.tokenEndpoint         = https://www.googleapis.com/oauth2/v4/token
+        # oauthcGoogleRealm.principalPropertyName = email
+
+        ## To use OAuth authentication along with BCD-UI authorization, add this. If the login found in bcd_sec_user, the id of the user is used for authorization, otherwise the login
+        # securityManager.realms = $oauthcAzureRealm, $oauthcGoogleRealm, $realmBcdJdbc
+        #### OAuth end
+
+        ## Support for bcd_log_login logging
+        bcdAuthListener = de.businesscode.bcdui.web.AuthenticationListener
+        securityManager.authenticator.authenticationListeners = $bcdAuthListener
+        ## Switch on Shiro caching and and use ehcache, make sure to also enable ShutdownListener below and make sure temp directory is writable
+        ## Default ttl of authorization is set to 1h and defined by cache/@name="realmBcdJdbc.authorizationCache" in ehcache.xml. If needed overwrite with a local ehcache.xml.
+        cacheManager = org.apache.shiro.cache.ehcache.EhCacheManager
+        securityManager.cacheManager = $cacheManager
+
+        invalidRequest.blockSemicolon = false
+
+        ## Some links
+        authc.loginUrl      = /login.html
+        # /oauth?oauth-provider-id=azure   use this if there is only an Azure login
+        authc.successUrl    = /index.html
+        logout.redirectUrl  = /index.html
+
+        #### Static users and their roles, needed when realmBcdJdbc is not used (named option 1. above), but can also be combined if needed
+        ## format: username = password, role1, role2, ..., roleN
+        [users]
+
+        ## format: roleName = permission1, permission2, ..., permissionN
+        [roles]
+        #### Static users and roles end
+
+        ## Which URLs are public ('anon') and which require the user to be logged in ('authc') and possibly specific roles or permissions
+        ## format: /reports/budget/** = authc, perms["pages:budget"]
+        [urls]
+        # Following one line is a workaround for a FireFox bug starting 2020. Obviously FF is not sending session cookies along with included xml/xslt in case of https
+        # Workaround for FF 81.02 still needed
+        /**/*.xslt              = anon
+
+        # This opens sensitive information to the caller and should only be allowed to a well-choosen subset of users
+        /bcdui/servlets/Wrq2SqlServlet/** = perms["bcdAdmin:ImplementationDetails"]
+
+        ## For all OAuth we listen here.
+        ## Login is triggered via calling /oauth?oauth-provider-id=azure or google in [url] section.
+        ## OAuth response from provider also goes to here (but without that parameter)
+        # /oauth                = oauthcAzure, oauthcGoogle
+
+        ## Anon access to at least all resources need by the login page
+        ## If anything is missing here, you will be redirected there after login
+        ## If here is too much, it will be insecure
+        /login.html           = authc
+        /logout               = logout
+        /bcdui/bcdui.js       = anon
+        ## you can even omit /bcdui/js/**, if you use ./bcdui/bcdui.js?bcduiConfigOnly=true on login page
+        /bcdui/js/**          = anon
+        /bcdui/theme/**       = anon
+        /bcdui/servlets/I18nServlet/**              = anon
+        /bcdui/servletsCached/I18nServlet/**        = anon
+        /bcdui/servletsSessionCached/I18nServlet/** = anon
+        /favicon.ico          = anon
+
+        ## protected
+        /**                   = authc
+        </param-value>
+      </init-param>
+     </filter>
+     <filter-mapping>
+     <filter-name>bcdui4.ShiroFilter</filter-name>
+      <url-pattern>/*</url-pattern>
+    </filter-mapping>-->
+
+  <!-- Overall BCD-UI request lifecycle handling -->
+    <filter>
+    <filter-name>bcdui4.RequestLifeCycleFilter</filter-name>
+    <filter-class>de.businesscode.bcdui.web.filters.RequestLifeCycleFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>bcdui4.RequestLifeCycleFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Allows setting subjectFilters -->
+  <filter>
+    <filter-name>bcdui4.SubjectSettingsFilter</filter-name>
+    <filter-class>de.businesscode.bcdui.web.filters.SubjectSettingsFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>bcdui4.SubjectSettingsFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Handle zipped guiStatus and request documents -->
+  <filter>
+    <filter-name>bcdui4.UnZipFilter</filter-name>
+    <filter-class>de.businesscode.bcdui.web.filters.UnZipFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>bcdui4.UnZipFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Explicitly disable caching in general to fix unwanted IE behaviors -->
+  <filter>
+    <filter-name>bcdui4.ClientCachingFilter_NoCache</filter-name>
+    <filter-class>de.businesscode.bcdui.web.cacheControl.ClientCachingFilter</filter-class>
+    <init-param>
+      <param-name>CacheRequestDirective</param-name>
+      <param-value>no-cache; no-store</param-value>
+    </init-param>
+    <init-param>
+      <param-name>ExcludeExtensions</param-name>
+      <param-value>slk</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>bcdui4.ClientCachingFilter_NoCache</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!--
+    Client-side caching
+    Per default until midnight. For development, set bcdui/disableCache=true in context.xml
+    Expiry samples: ExpiresAbsTime 00:00:00 (every day midnight) / ExpiresAbsDow Sun-20 (every Sunday 20:00) / ExpiresRelDays 2 (always after 2 *24h)
+    ExcludeUrls: Space separated 'starts-with' of the path like /bcdui/bcdui.js. End folders with a /: /myFolder/
+    ExcludeExtensions: Space separated extensions ('ends-with') like .vfsxml.
+  -->
+  <filter>
+    <filter-name>bcdui4.ClientCachingFilter</filter-name>
+    <filter-class>de.businesscode.bcdui.web.cacheControl.ClientCachingFilter</filter-class>
+    <init-param>
+      <param-name>ExpiresAbsTime</param-name> <!-- See doc for other values -->
+      <param-value>00:00:00</param-value>
+    </init-param>
+    <!--
+      Exclude content of virtual file system and other stuff here, if needed (space separated)
+      At least /bcdui/servlets/config.js and /bcdui/servlets/ must never be cached.
+      Also exclude any keep-alive addresses and of course data.
+      If you do any user-dependent activity, make sure they are also excluded from caching.
+      -->
+    <init-param>
+      <param-name>ExcludeUrls</param-name>
+      <param-value>/bcdui/servlets/ /vfs/ /bcdui/bcdui.js</param-value> <!-- Space separated. make sure to append /, otherwise it will also match to servletCached -->
+    </init-param>
+    <init-param>
+      <param-name>ExcludeExtensions</param-name>
+      <param-value>.jsp .html</param-value> <!-- Let deep links lead to a server request, which may in turn redirect to login -->
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>bcdui4.ClientCachingFilter</filter-name>
+
+    <!-- For production environment:
+      Do not cache all /* unless we are sure that *.jsp can be cached and row-level security is not used, always exclude /bcdui/servlets/ and /bcdui/bcdui.js (done above) -->
+    <url-pattern>*.js</url-pattern>
+    <url-pattern>*.xslt</url-pattern>
+    <url-pattern>*.xml</url-pattern>
+    <url-pattern>*.dott</url-pattern>
+    <url-pattern>*.png</url-pattern>
+    <url-pattern>*.jpg</url-pattern>
+    <url-pattern>*.gif</url-pattern>
+    <url-pattern>*.svg</url-pattern>
+    <url-pattern>*.ico</url-pattern>
+    <url-pattern>*.css</url-pattern>
+    <url-pattern>*.woff2</url-pattern>
+
+    <!-- Cache only content, which is not user dependent (for example no row-level security) -->
+    <url-pattern>/bcdui/servletsCached/*</url-pattern>
+    <url-pattern>/bcdui/servletsSessionCached/*</url-pattern>
+  </filter-mapping>
+
+  <!-- Allows for client-side caching depending on scopes maintained in bcd_cache_scope -->
+  <!-- filter>
+    <filter-name>bcdui4.DataModifiedFilter</filter-name>
+    <filter-class>de.businesscode.bcdui.web.cacheControl.DataModifiedFilter</filter-class>
+    <init-param>
+      <param-name>SCOPES_REFRESH_PERIOD_MS</param-name>
+      <param-value>30000</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>bcdui4.DataModifiedFilter</filter-name>
+    <url-pattern>/bcdui/servlets/*</url-pattern>
+  </filter-mapping -->
+
+  <!--
+    BCD-UI Standard servlets
+  -->
+  <!-- Serves static resources from bcdui jar and vfs -->
+  <servlet>
+    <servlet-name>bcdui4.StaticResourceServlet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.servlets.StaticResourceServlet</servlet-class>
+    <init-param>
+      <param-name>vfsFileExtensions</param-name>
+      <param-value>xml txt vfsxml pdf png gif jpg jpeg svg doc docx xls xlsx csv zip</param-value>
+    </init-param>
+  </servlet>
+  <!-- Add any URL for the virtual file system here -->
+  <servlet-mapping>
+    <servlet-name>bcdui4.StaticResourceServlet</servlet-name>
+    <url-pattern>/bcdui/*</url-pattern>
+    <url-pattern>/vfs/*</url-pattern>
+    <url-pattern>*.vfsxml</url-pattern>
+  </servlet-mapping>
+
+  <!-- I18nServlet -->
+  <servlet>
+    <servlet-name>bcdui4.I18nServlet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.i18n.I18nServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.I18nServlet</servlet-name>
+    <url-pattern>/bcdui/servlets/I18nServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsCached/I18nServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsSessionCached/I18nServlet/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- Evaluates and executes WrsRequests to the database -->
+  <servlet>
+    <servlet-name>bcdui4.WrsServlet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.wrs.WrsServlet</servlet-class>
+    <init-param>
+      <param-name>MaxRows</param-name>
+      <param-value>15000</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.WrsServlet</servlet-name>
+    <url-pattern>/bcdui/servlets/WrsServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsCached/WrsServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsSessionCached/WrsServlet/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- Export in cvs format, efficient, common but with issues in combination with Excel and data formats -->
+  <servlet>
+    <servlet-name>bcdui4.CsvServlet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.wrs.CsvServlet</servlet-class>
+    <init-param>
+      <param-name>MaxRows</param-name>
+      <param-value>65000</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.CsvServlet</servlet-name>
+    <url-pattern>/bcdui/servlets/CsvServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsCached/CsvServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsSessionCached/CsvServlet/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- Export in sylk format, efficient and data type save -->
+  <servlet>
+    <servlet-name>bcdui4.SylkServlet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.wrs.SylkServlet</servlet-class>
+    <init-param>
+      <param-name>MaxRows</param-name>
+      <param-value>65000</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.SylkServlet</servlet-name>
+    <url-pattern>/bcdui/servlets/SylkServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsCached/SylkServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsSessionCached/SylkServlet/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- Export in native Excel format, less efficient -->
+  <servlet>
+    <servlet-name>bcdui4.ExcelExportServlet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.wrs.ExcelExportServlet</servlet-class>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.ExcelExportServlet</servlet-name>
+    <url-pattern>/bcdui/servlets/ExcelExportServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsCached/ExcelExportServlet/*</url-pattern>
+    <url-pattern>/bcdui/servletsSessionCached/ExcelExportServlet/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- Per page request context infomation -->
+  <servlet>
+    <servlet-name>bcdui4.BCDUIConfig</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.servlets.BCDUIConfig</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.BCDUIConfig</servlet-name>
+    <url-pattern>/bcdui/bcdui.js</url-pattern>
+  </servlet-mapping>
+
+  <!-- Capable of zipping and unzipping guiStatus, Wrs and other documents -->
+  <servlet>
+    <servlet-name>bcdui4.ZipLet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.servlets.ZipLet</servlet-class>
+    <init-param>
+      <param-name>maxTinyUrlAge</param-name>
+      <param-value>-1</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.ZipLet</servlet-name>
+    <url-pattern>/bcdui/servlets/ZipLet</url-pattern>
+  </servlet-mapping>
+
+  <!-- For logging of client-side exception -->
+  <servlet>
+    <servlet-name>bcdui4.FrontendLogTransceiver</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.clientLogging.FrontendLogTransceiver</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.FrontendLogTransceiver</servlet-name>
+    <url-pattern>/bcdui/servlets/FrontendLogTransceiver</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>bcdui4.MenuServlet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.menu.MenuServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.MenuServlet</servlet-name>
+    <url-pattern>/bcdui/servlets/Menu</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>bcdui4.CacheManager</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.servlets.CacheManager</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.CacheManager</servlet-name>
+    <url-pattern>/bcdui/servlets/CacheManager</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>bcdui4.WrsNextIdentifierServlet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.web.wrs.WrsNextIdentifierServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.WrsNextIdentifierServlet</servlet-name>
+    <url-pattern>/bcdui/servlets/WrsNextIdentifierServlet/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- WYSIWYG Excel export Servlet -->
+  <!-- PLEASE NOTE: Consider setting maxPostSize in your server config -->
+  <servlet>
+    <servlet-name>bcdui4.Html2ExcelServlet</servlet-name>
+    <servlet-class>de.businesscode.bcdui.toolbox.MirrorServlet</servlet-class>
+    <init-param>
+      <param-name>header:Content-Type</param-name>
+      <param-value>application/vnd.ms-excel</param-value>
+    </init-param>
+    
+    <!-- set this to true if your server.xml connector is not using UTF-8 URIEncoding, otherwise set it to false -->
+     <init-param>
+      <param-name>EncodeUTF8</param-name>
+      <param-value>true</param-value>
+    </init-param>
+
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>bcdui4.Html2ExcelServlet</servlet-name>
+    <url-pattern>/bcdui/servlets/Html2ExcelServlet/*</url-pattern>
+  </servlet-mapping>
+
+  <!-- Session listener for session logging -->
+  <listener>
+    <listener-class>de.businesscode.bcdui.web.SessionListener</listener-class>
+  </listener>
+  <!-- Init code for BCD-UI server side components -->
+  <listener>
+    <listener-class>de.businesscode.bcdui.web.BcdUiApplicationContextListener</listener-class>
+  </listener>
+
+  <!-- This listener must be present when EHCache is used, because EHCache registers
+       a thread which keeps the application from shutting down
+       EHcache is for example used by shiro, check your web.xml -->
+  <listener>
+    <listener-class>net.sf.ehcache.constructs.web.ShutdownListener</listener-class>
+  </listener>
+
+  <!-- i18n configuration -->
+  <env-entry>
+    <description>Default context language</description>
+    <env-entry-name>bcdui/i18n/default/lang</env-entry-name>
+    <env-entry-type>java.lang.String</env-entry-type>
+    <env-entry-value>en</env-entry-value>
+  </env-entry>
+
+  <!-- This is also used by shiro's default web session manager -->
+  <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>
+
+</web-app>
