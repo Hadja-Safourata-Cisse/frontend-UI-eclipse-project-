@@ -45,14 +45,21 @@
 		<C id="population" caption="Population">
 				<Column>population</Column>
 		</C>
-
-		<C id="id" caption="ID" iskey="true">
-				<Column>id</Column>
-		</C>
+		
+		<C id="id" caption="Id" isKey="true"><Column>id</Column></C>
 
 		<C id="distancetocologne" caption="distancetocologne">
 				<Column>distancetocologne</Column>
 		</C>
+		
 
+		<SubjectSettings>
+				<Security>
+						<Operation permission="bindings:update:tb_worldcities" name="write" />
+				</Security>
+				<SubjectFilters>
+						<SubjectFilter type="geo:ctr" />
+				</SubjectFilters>
+		</SubjectSettings>
 
 </BindingSet>

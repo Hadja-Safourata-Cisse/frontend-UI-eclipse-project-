@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2010-2017 BusinessCode GmbH, Germany
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+  http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<BindingSet id="bcd_sec_user" table="bcd_sec_user" xmlns="http://www.businesscode.de/schema/bcdui/bindings-1.0.0"  dbSourceName="jdbc/postgres">
+  <!-- Do not use BindingSet/@dbSourceName, is has no effect. It always uses the default datasource context.xml bcdui/defaultConnection
+    unless it is overwritten in WEB-INF/subjectSettings.xml /SubjectSettingsConfig/SubjectSettings/Jdbc/DataSource/@name -->
+
+  <C id="user_id"     isKey="true" caption="User Id"><Column>user_id</Column></C>
+  <C id="user_login"  caption="User Login"><Column>user_login</Column></C>
+  <C id="name"        caption="Name"><Column>name</Column></C>
+  <C id="is_disabled" caption="Is disabled"><Column>is_disabled</Column></C>
+
+  <!-- We do not have the column names here for security reasons, defaults are 'password' and 'password_salt'.
+      can be overwritten in web.xml in shiro as realmBcdJdbc.bcdSecUserPasswordColumnName/.bcdSecUserPasswordSaltColumnName
+      &#x2026; is a marker and considered as "do not change" by SecUserTableWriteCallback if used in password writing  -->
+  <C id="password"      caption="Password"><Column>'&#x2026;'</Column></C>
+  <C id="password_salt" caption="Password Salt"><Column>'&#x2026;'</Column></C>
+  
+  <!-- the user can access only his own records -->
+  <C id="bcd_userId"><Column>user_id</Column></C>
+  <SubjectSettings>
+    <SubjectFilters>
+      <SubjectFilter type="bcd_userId:userId"/>
+    </SubjectFilters>
+  </SubjectSettings>
+
+  <WriteProcessing>
+    <Callbacks>
+      <!-- This does add the real column names for password and password_salt and limits write access to
+           users having @adminRight, which can be empty to allow it to everybody
+           and wrs:M cases, where the old pwd is provided correctly -->
+      <Callback class="de.businesscode.bcdui.subjectsettings.SecUserTableWriteCallback">
+        <Param adminRight="bcdAdmin:Users"/>
+      </Callback>
+    </Callbacks>
+  </WriteProcessing>
+
+</BindingSet>

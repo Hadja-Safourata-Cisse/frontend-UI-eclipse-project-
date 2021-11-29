@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SubjectSettingsConfig
+		xmlns="http://www.businesscode.de/schema/bcdui/subjectsettings-1.0.0">
+		<SubjectFilterTypes>
+				<SubjectFilterType name="geo:ctr">
+						<Caption>Countries</Caption>
+						<BindingItems>
+								<C bRef="country" />
+						</BindingItems>
+				</SubjectFilterType>
+				<SubjectFilterType name="admin:user">
+						<Caption>User</Caption>
+						<BindingItems>
+								<C bRef="user_id" />
+						</BindingItems>
+				</SubjectFilterType>
+		</SubjectFilterTypes>
+		<Authentication>
+				<SubjectSettings />
+		</Authentication>
+		<SubjectSettings>
+				<Jdbc>
+						<DefaultDataSource />
+				</Jdbc>
+		</SubjectSettings>
+</SubjectSettingsConfig>

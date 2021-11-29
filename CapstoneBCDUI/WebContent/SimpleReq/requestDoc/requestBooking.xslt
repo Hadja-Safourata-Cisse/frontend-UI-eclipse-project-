@@ -13,25 +13,13 @@
 				<WrsRequest>
 						<Select>
 								<Columns>
-										<C bRef='city' />
-										<C bRef='city_ascii' />
-										<C bRef='lat' />
-										<C bRef='lng' />
-										<C bRef='country' />
-										<C bRef='iso2' />
-										<C bRef='iso3' />
-										<C bRef='admin_name' />
-										<C bRef='capital' />
-										<C bRef='population' />
-										<C bRef='id' />
-										<C bRef='distancetocologne' />
+										<C bRef='originCity' />
+										<C bRef='destinationCity' />
 								</Columns>
 								<From>
-										<BindingSet>myCities</BindingSet>
+										<BindingSet>myBooking</BindingSet>
 								</From>
-								<f:Filter>
-										<xsl:copy-of select="/*/f:Filter/f:*" /> <!-- this copies all filters from the guiStatus -->
-								</f:Filter>
+								<f:Filter> <xsl:copy-of select="/*/f:Filter/f:*" /> </f:Filter>					
 						</Select>
 				</WrsRequest>
 		</xsl:template>

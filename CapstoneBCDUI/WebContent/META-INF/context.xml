@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Context>
 
+<!-- Disabling cache means: Client files and configuration files keep being read every time, true is usefull for development, false for production -->
+<Environment name="bcdui/disableCache" type="java.lang.Boolean" value="true"/>
+
+<!-- If no connection name is given in a binding set (bnd:BindingSet/@dbSourceName), this one is used -->
+<Environment name="bcdui/defaultConnection" type="java.lang.String" value="jdbc/postgres"/>
+
+<!-- IIS has a limit also for http request URLs, i.e. data requests, set this flag to true to compress all data request -->
+<Environment name="bcdui/serverHasRequestUrlLimit" type="java.lang.Boolean" value="false"/>
+
   <!-- Sample for MSSqlServer JDBC Driver 7
        -Dmyproj_db_url=jdbc:sqlserver://sqlserverXX:1433;databaseName=dbNameXX
   <Resource name="jdbc/connectionMSSqlserver"

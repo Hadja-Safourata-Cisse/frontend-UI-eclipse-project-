@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dimensions
+		xmlns="http://www.businesscode.de/schema/bcdui/dimmeas-1.0.0">
+		<Dimension id="myDimension">
+				<Hierarchy bindingSet="myCities">
+						<Level id="country" caption="Country" bRef="country" />
+						<Level id="city" caption="City"    bRef="city" />
+				</Hierarchy>
+		</Dimension>
+		<Dimension id="DimOriginCity">
+				<Hierarchy bindingSet="myBooking">
+						<Level id="originCity" caption="originCity"
+								bRef="originCity" />
+						<Level id="id" caption="id" bRef="id" />
+				</Hierarchy>
+		</Dimension>
+		<Dimension id="DimDestinationCity">
+				<Hierarchy bindingSet="myBooking">
+						<Level id="destinationCity" caption="destinationCity"
+								bRef="destinationCity" />
+						<Level id="id" caption="id" bRef="id" />
+				</Hierarchy>
+		</Dimension>
+
+</Dimensions>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="UTF-8"?>
+<Configuration
+    xmlns="http://www.businesscode.de/schema/bcdui/renderer-1.0.0"
+    id="myDim">
+    <Hierarchy bindingSetId="myCities">
+        <Level id="city" type="city" caption="City" bRef="city" />
+    </Hierarchy>
+</Configuration>-->
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<?xml version="1.0" encoding="UTF-8"?>
+<Dimensions xmlns="http://www.businesscode.de/schema/bcdui/dimmeas-1.0.0">
+<Dimension id="dim">
+		<Hierarchy bindingSet="myCities">
+				<Level id="country" caption="country" bRef="country" />
+				<Level id="city" caption="city" bRef="city" />
+		</Hierarchy>
+</Dimension>
+</Dimensions>-->
+
+
+<!--<Configuration xmlns="http://www.businesscode.de/schema/bcdui/renderer-1.0.0" id="dim">
+  <Hierarchy bindingSet="myCities">
+  <Level id="country" bRef="country" caption="country" type="country"/>
+  </Hierarchy>  
+</Configuration>-->
+
+
+
