@@ -3,7 +3,6 @@
 		dbSourceName="jdbc/postgres"
 		xmlns="http://www.businesscode.de/schema/bcdui/bindings-1.0.0"
 		xmlns:wrs="http://www.businesscode.de/schema/bcdui/wrs-1.0.0">
-
 		<C id="id" caption="Id" isKey="true">
 				<Column>id</Column>
 		</C>
@@ -15,5 +14,4 @@
 		<C id="destinationCity" caption="destinationCity">
 				<Column>destinationCity</Column>
 		</C>
-
 </BindingSet>

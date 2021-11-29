@@ -21,8 +21,5 @@
 						<BindingSet>myCities</BindingSet>
 				</From>
 
-				<!--<Filter xmlns="http://www.businesscode.de/schema/bcdui/filter-1.0.0"> 
-						<Expression bRef="country" op="=" value="China" /> </Filter> -->
-
 		</Select>
 </WrsRequest>

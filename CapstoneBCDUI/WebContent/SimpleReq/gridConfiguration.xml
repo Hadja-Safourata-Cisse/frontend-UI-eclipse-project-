@@ -9,15 +9,14 @@
 				<wrq:Columns>
 						<wrq:C bRef="city" />
 						<wrq:C bRef="city_ascii" />
-						<!--<wrq:C bRef="lat" />
-						<wrq:C bRef="lng" />-->
+						<wrq:C bRef="lat" />
+						<wrq:C bRef="lng" />
 						<wrq:C bRef="country" />
 						<wrq:C bRef="iso2" />
 						<wrq:C bRef="iso3" />
 						<wrq:C bRef="admin_name" />
 						<wrq:C bRef="capital" />
 						<wrq:C bRef="population" />
-						<!--<wrq:C bRef="id" />-->
 						<wrq:C bRef="id" isHidden="true" isReadOnly="true"/>
        
 				</wrq:Columns>

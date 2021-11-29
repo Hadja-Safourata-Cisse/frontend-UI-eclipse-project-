@@ -24,7 +24,7 @@
 										<C bRef='capital' />
 										<C bRef='population' />
 										<C bRef='id' />
-										<C bRef='distancetocologne' />
+										<C bRef='distancetocologne'  />
 								</Columns>
 								<From>
 										<BindingSet>myCities</BindingSet>

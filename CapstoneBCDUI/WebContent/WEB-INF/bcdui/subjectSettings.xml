@@ -8,12 +8,12 @@
 								<C bRef="country" />
 						</BindingItems>
 				</SubjectFilterType>
-				<SubjectFilterType name="admin:user">
+				<!--<SubjectFilterType name="admin:user">
 						<Caption>User</Caption>
 						<BindingItems>
 								<C bRef="user_id" />
 						</BindingItems>
-				</SubjectFilterType>
+				</SubjectFilterType>-->
 		</SubjectFilterTypes>
 		<Authentication>
 				<SubjectSettings />

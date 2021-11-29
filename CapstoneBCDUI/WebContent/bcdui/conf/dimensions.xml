@@ -4,7 +4,7 @@
 		<Dimension id="myDimension">
 				<Hierarchy bindingSet="myCities">
 						<Level id="country" caption="Country" bRef="country" />
-						<Level id="city" caption="City"    bRef="city" />
+						<Level id="city" caption="City"   bRef="city" />
 				</Hierarchy>
 		</Dimension>
 		<Dimension id="DimOriginCity">

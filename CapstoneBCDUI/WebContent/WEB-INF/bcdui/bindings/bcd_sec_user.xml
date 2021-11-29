@@ -37,7 +37,7 @@
   <WriteProcessing>
     <Callbacks>
       <!-- This does add the real column names for password and password_salt and limits write access to
-           users having @adminRight, which can be empty to allow it to everybody
+           users having @adminRight, which can be empty to allow it to everybod
            and wrs:M cases, where the old pwd is provided correctly -->
       <Callback class="de.businesscode.bcdui.subjectsettings.SecUserTableWriteCallback">
         <Param adminRight="bcdAdmin:Users"/>

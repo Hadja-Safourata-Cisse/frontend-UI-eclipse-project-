@@ -1,3 +1,4 @@
 <cube:CubeConfiguration xmlns:cube="http://www.businesscode.de/schema/bcdui/cube-2.0.0">
 <xi:include href="./cubeConfiguration.xml" xpointer="/*/*" xmlns:xi="http://www.w3.org/2001/XInclude"/>
 </cube:CubeConfiguration>
+<!-- Cube Configuration -->

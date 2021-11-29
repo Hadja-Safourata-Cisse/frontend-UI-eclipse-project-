@@ -9,8 +9,10 @@
 						<xsl:copy-of select="current()*0.621371" />
 				</xsl:copy>
 		</xsl:template>
+		<!-- Matches any element node -->
 		<xsl:template match="*">
 				<xsl:copy>
+				  <!--Matches any attribute node-->
 						<xsl:copy-of select="@*" />
 						<xsl:apply-templates />
 				</xsl:copy>

@@ -69,7 +69,7 @@ export default class App {
 
     function gridCreation() {
       viewTarget.empty();
-      //DataProvider for the Grid         
+      //DataProvider for the Grid Component      
       var worldcities = new bcdui.core.AutoModel({
         bRefs: "city city_ascii country iso2 iso3 admin_name capital population id",
         bindingSetId: "myCities",
@@ -148,8 +148,6 @@ export default class App {
 
       }
     })
-
-
 
 
     // DataProvider for the filters

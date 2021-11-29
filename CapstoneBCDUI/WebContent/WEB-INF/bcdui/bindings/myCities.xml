@@ -4,7 +4,6 @@
 		xmlns="http://www.businesscode.de/schema/bcdui/bindings-1.0.0"
 		xmlns:wrs="http://www.businesscode.de/schema/bcdui/wrs-1.0.0">
 
-
 		<C id="city" caption="City">
 				<Column>city</Column>
 		</C>
